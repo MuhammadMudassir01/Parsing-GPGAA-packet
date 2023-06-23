@@ -1,35 +1,23 @@
-| Supported Targets | ESP32 | ESP32-C2 | ESP32-C3 | ESP32-S2 | ESP32-S3 |
-| ----------------- | ----- | -------- | -------- | -------- | -------- |
+**The NMEA (National Marine Electronics Association)** has defined standards that specify how electronic equipment for marine users communicate. GNSS receivers are part of this standard and the NMEA has defined the format for several GNSS data logs otherwise known as 'sentences'.
 
-# _Sample project_
-
-(See the README.md file in the upper level 'examples' directory for more information about examples.)
-
-This is the simplest buildable example. The example is used by command `idf.py create-project`
-that copies the project to user specified path and set it's name. For more information follow the [docs page](https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/build-system.html#start-a-new-project)
+Each NMEA sentence begins with a '$' followed by a two-letter prefix identifying the type of sending device (for example 'GP', 'GL' or ‘GN’), followed by a sequence of letters that define the type of information contained in the sentence. Data contained within the sentence is separated by commas and the sentence is terminated with a two digit checksum followed by a carriage return/line feed. Here is an example of a NMEA sentence describing time, position and fix related data:
 
 
 
-## How to use example
-We encourage the users to use the example as a template for the new projects.
-A recommended way is to follow the instructions on a [docs page](https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/build-system.html#start-a-new-project).
+# Parsing-GPGAA-packet
+In this simple project, we seprated the detail like altutide, latitude, longitude etc from GPGAA packet of GPS. 
 
-## Example folder contents
+First step is to make struct variables to store the data from GPGAA packet. we used strtok function in C to split the string. 
 
-The project **sample_project** contains one source file in C language [main.c](main/main.c). The file is located in folder [main](main).
+strtok():
+The C library function char *strtok(char *str, const char *delim) breaks string str into a series of tokens using the delimiter delim.
+**str − The contents of this string are modified and broken into smaller strings (tokens).**
 
-ESP-IDF projects are built using CMake. The project build configuration is contained in `CMakeLists.txt`
-files that provide set of directives and instructions describing the project's source files and targets
-(executable, library, or both). 
+**delim − This is the C string containing the delimiters. These may vary from one call to another.**
 
-Below is short explanation of remaining files in the project folder.
+Return Value
+This function returns a pointer to the first token found in the string. A null pointer is returned if there are no tokens left to retrieve.
 
-```
-├── CMakeLists.txt
-├── main
-│   ├── CMakeLists.txt
-│   └── main.c
-└── README.md                  This is the file you are currently reading
-```
-Additionally, the sample project contains Makefile and component.mk files, used for the legacy Make based build system. 
-They are not used or needed when building with CMake and idf.py.
+
+
+we then save the splitting string into the varaibles named altitude, longtitude etc. we created a library for saving the variables. 
